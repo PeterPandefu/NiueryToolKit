@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "mKh5D9M0SCBEJ3gTD32R/VNphguPkGLxBmPHj0n1u7ek3e+dyren3SB//2F1Rhcuyd9aZ0/hz7tiRDY4VemfHw==",
+  "success": true,
+  "projectFilePath": "D:\\GitRepository\\NiueryToolKit\\NiueryToolKit\\NiueryToolKit.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512"
+  ],
+  "logs": []
+}
