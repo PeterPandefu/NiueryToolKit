@@ -15,3 +15,8 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+
+# Ignore all .csproj.user files (VS-generated user-specific configuration files)
+*.csproj.user
+NiueryToolKit/NiueryToolKit.csproj.user
+ResXManager.config.xml
