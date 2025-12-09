@@ -61,6 +61,15 @@ namespace NiueryToolKit.Resource.I18n {
         }
         
         /// <summary>
+        ///   查找类似 图片处理 的本地化字符串。
+        /// </summary>
+        internal static string 图片处理 {
+            get {
+                return ResourceManager.GetString("图片处理", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 文件HASH 的本地化字符串。
         /// </summary>
         internal static string 文件HASH {

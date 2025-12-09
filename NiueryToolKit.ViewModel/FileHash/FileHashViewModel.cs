@@ -34,6 +34,7 @@ namespace NiueryToolKit.ViewModel.FileHash
 
         #region ctor
 
+        private IViewOperator MainView => _serviceProvider.GetService<IViewOperator>();
         private readonly IServiceProvider _serviceProvider;
         public FileHashViewModel(IServiceProvider serviceProvider)
         {
@@ -45,8 +46,7 @@ namespace NiueryToolKit.ViewModel.FileHash
         public void OpenFile()
         {
             HashDates.Clear();
-            var view = _serviceProvider.GetService<IViewOperator>();
-            var files = view.OpenFile();
+            var files = MainView?.OpenFile();
 
             Path = files.Count() > 0 ? files.First() : string.Empty;
         }
@@ -55,8 +55,7 @@ namespace NiueryToolKit.ViewModel.FileHash
         public void OpenFolder()
         {
             HashDates.Clear();
-            var view = _serviceProvider.GetService<IViewOperator>();
-            var folders = view.OpenFolder();
+            var folders = MainView?.OpenFolder();
             Path = folders.Count() > 0 ? folders.First() : string.Empty;
         }
 
@@ -70,7 +69,6 @@ namespace NiueryToolKit.ViewModel.FileHash
             }
             else if (Directory.Exists(path))
             {
-                // 是文件夹
                 var files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
                 foreach (string file in files)
                 {
@@ -79,10 +77,7 @@ namespace NiueryToolKit.ViewModel.FileHash
                     CreateFileHashDate(file);
                 }
             }
-            else
-            {
 
-            }
         }
 
         private void CreateFileHashDate(string filePath)
@@ -113,10 +108,10 @@ namespace NiueryToolKit.ViewModel.FileHash
 
             HashDates.Add(new FileHashDate
             {
-                filePath = filePath,
-                _MD5 = md5,
-                _SHA1 = sha1,
-                _SHA256 = sha256
+                FilePath = filePath,
+                MD5 = md5,
+                SHA1 = sha1,
+                SHA256 = sha256
             });
         }
     }

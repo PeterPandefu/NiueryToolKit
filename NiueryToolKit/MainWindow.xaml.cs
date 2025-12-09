@@ -29,8 +29,8 @@ namespace NiueryToolKit
         {
             _serviceProvider = serviceProvider;
             DataContext = serviceProvider.GetService(typeof(MainViewModel));
-            InitializeComponent();
 
+            InitializeComponent();
         }
 
         public void Message(string message, string tiele)
@@ -73,7 +73,7 @@ namespace NiueryToolKit
         {
             Window window = controller.View as Window;
             window.DataContext = controller.ViewModel;
-            window.Show();
+            window.ShowDialog();
         }
 
         public void SwitchLanguage()

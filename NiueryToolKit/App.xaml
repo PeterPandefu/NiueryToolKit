@@ -4,5 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:NiueryToolKit">
     <!--  StartupUri="MainWindow.xaml"  -->
-    <Application.Resources />
+    <Application.Resources>
+
+        <ResourceDictionary>
+            <BitmapImage
+                x:Key="AppIconSource"
+                DecodePixelHeight="256"
+                DecodePixelWidth="256"
+                UriSource="/NiueryToolKit;component/Resource/Images/NiueryToolKit-TaskBar.png" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Converter/ConverterDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Application.Resources>
 </Application>

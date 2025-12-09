@@ -19,6 +19,7 @@ namespace NiueryToolKit.ViewModel.MainWindow
     public partial class MainViewModel : ObservableObject
     {
         #region ctor
+        private IViewOperator MainView => _serviceProvider.GetService<IViewOperator>();
 
         private readonly IServiceProvider _serviceProvider;
         public MainViewModel(IServiceProvider serviceProvider)
@@ -29,23 +30,38 @@ namespace NiueryToolKit.ViewModel.MainWindow
 
         #region command
 
-        public RelayCommand<string> ShowWindowCommand => new RelayCommand<string>(ShowWindow);
+        public RelayCommand<string?> ShowWindowCommand => new RelayCommand<string?>(ShowWindow);
         public RelayCommand SwitchLanguageCommand => new RelayCommand(SwitchLanguage);
 
         #endregion
 
         #region command method
 
-        private void ShowWindow(string name)
+        private void ShowWindow(string? name)
         {
-            var view = _serviceProvider.GetService<IViewOperator>();
-            view.ShowWindow((IMVVMController)_serviceProvider.GetService(typeof(FileHashController)));
+            try
+            {
+                var tagetType = GetTypeByName(name);
+
+                if (tagetType != null)
+                {
+                    var controller = _serviceProvider.GetService(tagetType) as IMVVMController;
+
+                    if (controller != null)
+                    {
+                        MainView?.ShowWindow(controller);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MainView?.Message(ex.Message, "Error");
+            }
         }
 
         private void SwitchLanguage()
         {
-            var view = _serviceProvider.GetService<IViewOperator>();
-            view.SwitchLanguage();
+            MainView?.SwitchLanguage();
         }
 
         #endregion
@@ -56,7 +72,9 @@ namespace NiueryToolKit.ViewModel.MainWindow
         {
             return name switch
             {
-                "FileHASH" => typeof(FileHashController)
+                "FileHASH" => typeof(FileHashController),
+                "ImageProcessing" => typeof(ImageProcessingController),
+                _ => throw new NotImplementedException(),
             };
         }
         #endregion

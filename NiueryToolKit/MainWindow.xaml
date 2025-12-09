@@ -7,10 +7,11 @@
     xmlns:local="clr-namespace:NiueryToolKit"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:NiueryToolKit.ViewModel.MainWindow;assembly=NiueryToolKit.ViewModel"
-    Title="MainWindow"
+    Title="Niuery Toolkit"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+    Icon="{StaticResource AppIconSource}"
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
     WindowStyle="SingleBorderWindow"
@@ -42,5 +43,11 @@
             Margin="20"
             Command="{Binding SwitchLanguageCommand}"
             Content="{extensions:I18n Key=语言切换}" />
+        <Button
+            Grid.Column="2"
+            Margin="20"
+            Command="{Binding ShowWindowCommand}"
+            CommandParameter="ImageProcessing"
+            Content="{extensions:I18n Key=图片处理}" />
     </Grid>
 </Window>

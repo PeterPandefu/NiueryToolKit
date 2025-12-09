@@ -1,0 +1,467 @@
+﻿<Window
+    x:Class="NiueryToolKit.View.ImageProcessing.ImageProcessing"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:NiueryToolKit.Extension.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NiueryToolKit.View.ImageProcessing"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:NiueryToolKit.ViewModel.ImageProcessing;assembly=NiueryToolKit.ViewModel"
+    Title="ImageProcessing"
+    Width="800"
+    Height="450"
+    d:DataContext="{d:DesignInstance Type=vm:ImageProcessingViewModel}"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="TextBlockStyleButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Padding" Value="0" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Padding" Value="0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <TabControl Grid.RowSpan="3" Margin="10">
+            <TabItem Header="格式转换">
+
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="目标格式" />
+
+                    <ListBox
+                        Grid.Row="1"
+                        Margin="0,10,0,0"
+                        BorderThickness="0"
+                        ItemsSource="{Binding ImageTypes}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton
+                                    Width="100"
+                                    Height="30"
+                                    Margin="10"
+                                    Content="{Binding TypeName}"
+                                    GroupName="ImageTypeRadioGroup"
+                                    IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Height="30" Orientation="Horizontal">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="输出路径：" />
+                            <TextBlock />
+                            <Button
+                                Width="150"
+                                Height="auto"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Command="{Binding OpenCommand}"
+                                Foreground="Red"
+                                Style="{StaticResource TextBlockStyleButton}">
+                                <TextBlock Text="{Binding OutputPath}" TextWrapping="Wrap" />
+                            </Button>
+                        </StackPanel>
+                        <Button
+                            Grid.Column="1"
+                            Width="80"
+                            Height="30"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ProcessingCommand}"
+                            CommandParameter="ImageConverter"
+                            Content="执行" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="图片合并">
+
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="目标格式" />
+
+
+
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Height="30" Orientation="Horizontal">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="输出路径：" />
+                            <TextBlock />
+                            <TextBlock
+                                Width="200"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="Red"
+                                Text="{Binding OutputPath}"
+                                TextWrapping="Wrap" />
+
+                        </StackPanel>
+                        <Button
+                            Grid.Column="1"
+                            Width="80"
+                            Height="30"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ProcessingCommand}"
+                            CommandParameter="ImageMerging"
+                            Content="执行" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="图片压缩">
+
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="目标格式" />
+
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Height="30" Orientation="Horizontal">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="输出路径：" />
+                            <TextBlock />
+                            <TextBlock
+                                Width="200"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="Red"
+                                Text="{Binding OutputPath}"
+                                TextWrapping="Wrap" />
+
+                        </StackPanel>
+                        <Button
+                            Grid.Column="1"
+                            Width="80"
+                            Height="30"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ProcessingCommand}"
+                            CommandParameter="ImageCompression"
+                            Content="执行" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="调整尺寸">
+
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="目标格式" />
+
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Height="30" Orientation="Horizontal">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="输出路径：" />
+                            <TextBlock />
+                            <TextBlock
+                                Width="200"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="Red"
+                                Text="{Binding OutputPath}"
+                                TextWrapping="Wrap" />
+
+                        </StackPanel>
+                        <Button
+                            Grid.Column="1"
+                            Width="80"
+                            Height="30"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ProcessingCommand}"
+                            CommandParameter="ImageResizing"
+                            Content="执行" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="图片旋转">
+
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="目标格式" />
+
+
+
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Height="30" Orientation="Horizontal">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="输出路径：" />
+                            <TextBlock />
+                            <TextBlock
+                                Width="200"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="Red"
+                                Text="{Binding OutputPath}"
+                                TextWrapping="Wrap" />
+
+                        </StackPanel>
+                        <Button
+                            Grid.Column="1"
+                            Width="80"
+                            Height="30"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ProcessingCommand}"
+                            CommandParameter="ImageRotation"
+                            Content="执行" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="图片翻转">
+
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="目标格式" />
+
+
+
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Height="30" Orientation="Horizontal">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="输出路径：" />
+                            <TextBlock />
+                            <TextBlock
+                                Width="200"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="Red"
+                                Text="{Binding OutputPath}"
+                                TextWrapping="Wrap" />
+
+                        </StackPanel>
+                        <Button
+                            Grid.Column="1"
+                            Width="80"
+                            Height="30"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ProcessingCommand}"
+                            CommandParameter="ImageFlipping"
+                            Content="执行" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+
+        <StackPanel
+            Grid.Column="1"
+            Height="40"
+            Margin="10"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="路径" />
+            <TextBox
+                Grid.Column="1"
+                Width="100"
+                Margin="20,5,0,5"
+                behaviors:DragDropPathBehavior.IsEnabled="true"
+                Text="{Binding Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button
+                Width="80"
+                Margin="20,5,20,5"
+                HorizontalAlignment="Left"
+                Command="{Binding OpenFileCommand}"
+                Content="选择文件" />
+            <Button
+                Width="80"
+                Margin="0,5,20,5"
+                HorizontalAlignment="Left"
+                Command="{Binding OpenFolderCommand}"
+                Content="选择文件夹" />
+
+
+        </StackPanel>
+
+        <DataGrid
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="10,0,10,0"
+            AutoGenerateColumns="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding ImagePaths}"
+            SelectedItem="{Binding SelectedFile}"
+            SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="5*"
+                    Binding="{Binding Path, Converter={StaticResource FileNameTruncator}}"
+                    Header="文件名" />
+                <!--<DataGridTemplateColumn Width="1*" Header="操作">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                -->
+                <!--  编辑按钮  -->
+                <!--
+                                <Button
+                                    x:Name="btnEdit"
+                                    Width="70"
+                                    Height="28"
+                                    Content="编辑">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#0078D7" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="BorderBrush" Value="#0078D7" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#005A9E" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                -->
+                <!--  删除按钮  -->
+                <!--
+                                <Button
+                                    x:Name="btnDelete"
+                                    Width="70"
+                                    Height="28"
+                                    Content="删除">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#E81123" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="BorderBrush" Value="#E81123" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#C00010" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+    </Grid>
+</Window>

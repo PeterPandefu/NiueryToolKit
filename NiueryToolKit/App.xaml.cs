@@ -5,6 +5,7 @@ using NiueryToolKit.Base.Implementation;
 using NiueryToolKit.Base.Interface;
 using NiueryToolKit.Resource.I18n;
 using NiueryToolKit.ViewModel.FileHash;
+using NiueryToolKit.ViewModel.ImageProcessing;
 using NiueryToolKit.ViewModel.MainWindow;
 using System;
 using System.Configuration;
@@ -46,8 +47,8 @@ namespace NiueryToolKit
             I18nManager.Instance.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
             I18nManager.Instance.Add(I18n_UI.ResourceManager);
 
-            // Register
 
+            // Register
             HostApplicationBuilder builder = Host.CreateApplicationBuilder();
             Registcontroller(builder);
             RegistView(builder);
@@ -66,8 +67,20 @@ namespace NiueryToolKit
 
         private void Registcontroller(HostApplicationBuilder builder)
         {
-            builder.Services.AddSingleton<IMVVMController, FileHashController>();
-            builder.Services.AddSingleton<FileHashController>();
+            Assembly assembly = Assembly.Load("NiueryToolKit.Base");
+
+            Type interfaceType = typeof(IMVVMController);
+
+            var types = assembly.GetTypes()
+                .Where(t => t.GetInterfaces().Contains(interfaceType))
+                .ToList();
+
+            foreach (var item in types)
+            {
+                builder.Services.AddSingleton(typeof(IMVVMController), item);
+                builder.Services.AddSingleton(item);
+            }
+
 
             builder.Services.AddSingleton<IViewOperator, MainWindow>();
         }
@@ -104,6 +117,7 @@ namespace NiueryToolKit
             Dictionary<Type, Tuple<Type, Type>> mapper = new Dictionary<Type, Tuple<Type, Type>>();
 
             mapper.Add(typeof(FileHashController), Tuple.Create(typeof(View.FileHash.FileHash), typeof(FileHashViewModel)));
+            mapper.Add(typeof(ImageProcessingController), Tuple.Create(typeof(View.ImageProcessing.ImageProcessing), typeof(ImageProcessingViewModel)));
 
             foreach (var item in mapper)
             {
